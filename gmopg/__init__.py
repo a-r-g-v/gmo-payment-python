@@ -182,7 +182,17 @@ class Card(BaseAPI):
 
 
 class Trade(BaseAPI):
-    pass
+
+    def search(self, options={}):
+        """
+            指定したオーダーID の取引情報を取得します。
+
+            ShopID
+            ShopPass
+            OrderID
+        """
+        self.assertRequiredOptions(['ShopID', 'ShopPass', 'OrderID'], options)
+        return self.post('SearchTrade.idPass', data=options)
 
 
 class Tran(BaseAPI):
@@ -244,8 +254,17 @@ class Tran(BaseAPI):
     def change(self, options={}):
         """
             決済が完了した取引に対して金額の変更を行います。
+
+            ShopID
+            ShopPass
+            AccessID
+            AccessPass
+            JobCd CAPTURE / AUTH / SAUTH
+            Amount
+            Tax
         """
-        pass
+        self.assertRequiredOptions(['ShopID', 'ShopPass', 'AccessID', 'AccessPass', 'JobCd', 'Amount'], options)
+        return self.post('ChangeTran.idPass', data=options)
 
     def alter(self, options={}):
         """

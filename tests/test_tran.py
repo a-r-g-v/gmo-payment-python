@@ -38,3 +38,13 @@ class TranTestCase(unittest.TestCase):
             assert 'Approve' in response.data
             assert 'TranID' in response.data
             assert 'TranDate' in response.data
+
+    def test_change(self):
+        tran = Tran()
+
+        with mock() as m:
+            m.post(API_BASE_URL + 'ChangeTran.idPass', text='AccessID=1234&AccessPass=1234&Forward=1234&Approve=1234&TranID=1234&TranDate=20160311053322')
+            response = tran.change(options={'ShopID': '1234', 'ShopPass': '1234', 'AccessID': '1234', 'AccessPass': '1234', 'JobCd': 'SAUTH', 'Amount': '1234567'})
+            assert 'Approve' in response.data
+            assert 'TranID' in response.data
+            assert 'TranDate' in response.data
