@@ -37,3 +37,10 @@ class CardTestCase(unittest.TestCase):
 
             assert parased_response[1]['CardSeq'] == '2'
             assert parased_response[1]['CardName'] == 'foo'
+
+    def test_traded(self):
+        card = Card()
+        with mock() as m:
+            m.post(API_BASE_URL + 'TradedCard.idPass', text="CardSeq=1&CardNo=1111&Forward=1111")
+            response = card.traded(options={'SiteID': '1111', 'SitePass': '1111', 'OrderID': '1234', 'ShopID': '1234', 'ShopPass': '1234', 'MemberID': '1234'})
+            assert 'CardNo' in response.data

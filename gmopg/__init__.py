@@ -180,6 +180,23 @@ class Card(BaseAPI):
         self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'SeqMode'], options)
         return self.post('SearchCard.idPass', data=options)
 
+    def traded(self, options={}):
+        """
+            指定されたオーダーID の取引に使用したカードを登録します。
+
+            ShopID
+            ShopPass
+            OrderID
+            SiteID
+            SitePass
+            MemberID
+            SeqMode
+            DefaultFlag
+            HolderName
+        """
+        self.assertRequiredOptions(['ShopID', 'ShopPass', 'OrderID', 'SiteID', 'SitePass', 'MemberID'], options)
+        return self.post('TradedCard.idPass', data=options)
+
 
 class Trade(BaseAPI):
 
