@@ -33,6 +33,26 @@ class Response(object):
         # parse_qs は {"key": ["value"]} という dict を返却するので，扱いやすいように {"key": "value"} に変換する
         return {k: v[0] for k, v in response_dict.items()}
 
+    def parse(self, ignores=[]):
+        """
+            self.data = {'CardName': 'poe|foo', 'CardNo': '1111|2222'} を， [{'CardName': 'poe', 'CardNo': '1111'}. {'CardName': 'foo', 'CardNo': '2222'}] のように直して返却します
+            ignoresでは，self.dataに存在するキーの名前をリストで指定でき，そのキーを返却結果に含めないようにすることができます。
+        """
+        assert type(self.data) is dict
+        assert type(ignores) is list
+
+        result = {}
+        for k, v in self.data.items():
+            if k in ignores:
+                continue
+
+            for i2, v2 in enumerate(str(v).split('|')):
+                if i2 not in result:
+                    result[i2] = {}
+                result[i2][k] = v2
+
+        return result.values()
+
 
 class BaseAPI(object):
 
@@ -122,8 +142,8 @@ class Card(BaseAPI):
             SiteID  CHAR(13)
             SitePass    CHAR(20)
             MemberID    CHAR(60)
-            SeqMode     CHAR(!)
-            CardSeq     NUMBER
+            SeqMode     CHAR(1)
+            CardSeq     NUMBER(4)
             DefaultFlag CHAR(1) 0(継続課金対象としない, デフォルト値), 1(継続課金対象とする)
             CardName    CHAR(10)
             CardNo      CHAR(16)
@@ -145,10 +165,20 @@ class Card(BaseAPI):
             CardSeq CHAR(4) 削除を行うカードの登録連番を設定します。
         """
         self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'CardSeq'], options)
-        return self.post('DeleteCard.idpass', data=options)
+        return self.post('DeleteCard.idPass', data=options)
 
     def search(self, options={}):
-        pass
+        """
+            指定した会員のカード情報を参照します。
+
+            SiteID
+            SitePass
+            MemberID
+            SeqMode
+            CardSeq
+        """
+        self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'SeqMode'], options)
+        return self.post('SearchCard.idPass', data=options)
 
 
 class Trade(BaseAPI):
