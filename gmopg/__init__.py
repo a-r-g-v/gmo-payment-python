@@ -28,3 +28,19 @@ class BaseAPI(object):
 
     def post(self, path, **kwargs):
         return self._requests(requests.post, path, **kwargs)
+
+
+class Tran(BaseAPI):
+    pass
+
+
+class Member(BaseAPI):
+    pass
+
+
+class Card(BaseAPI):
+    pass
+
+
+class Trade(BaseAPI):
+    pass
