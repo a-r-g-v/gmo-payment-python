@@ -114,7 +114,31 @@ class Member(BaseAPI):
 
 
 class Card(BaseAPI):
-    pass
+
+    def save(self, options={}):
+        """
+            指定した会員にカード情報を登録します。尚、サイトに設定されたショップ ID を使用してカード会社と通信を行い有効性の確認を行います。
+
+            SiteID  CHAR(13)
+            SitePass    CHAR(20)
+            MemberID    CHAR(60)
+            SeqMode     CHAR(!)
+            CardSeq     NUMBER
+            DefaultFlag CHAR(1) 0(継続課金対象としない, デフォルト値), 1(継続課金対象とする)
+            CardName    CHAR(10)
+            CardNo      CHAR(16)
+            CardPass    CHAR(20)
+            Expire      CHAR(4)
+            HolderName  CHAR(50) 名義人
+        """
+        self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'CardNo', 'Expire'], options)
+        return self.post('SaveCard.idPass', data=options)
+
+    def delete(self, options={}):
+        pass
+
+    def search(self, options={}):
+        pass
 
 
 class Trade(BaseAPI):
