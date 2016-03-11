@@ -15,3 +15,10 @@ class CardTestCase(unittest.TestCase):
             assert 'CardSeq' in response.data
             assert 'CardNo' in response.data
             assert 'Forward' in response.data
+
+    def test_delete(self):
+        card = Card()
+        with mock() as m:
+            m.post(API_BASE_URL + 'DeleteCard.idPass', text="CardSeq=1000")
+            response = card.delete(options={'SiteID': '1234', 'SitePass': '1234', 'MemberID': '1', 'CardSeq': '1000'})
+            assert 'CardSeq' in response.data

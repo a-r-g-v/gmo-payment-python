@@ -135,7 +135,17 @@ class Card(BaseAPI):
         return self.post('SaveCard.idPass', data=options)
 
     def delete(self, options={}):
-        pass
+        """
+            指定した会員のカード情報を削除します。
+
+            SiteID
+            SitePass
+            MemberID
+            SeqMode
+            CardSeq CHAR(4) 削除を行うカードの登録連番を設定します。
+        """
+        self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'CardSeq'], options)
+        return self.post('DeleteCard.idpass', data=options)
 
     def search(self, options={}):
         pass
