@@ -75,13 +75,21 @@ class Member(BaseAPI):
             SiteID  char(13)
             SitePass    char(20)
             MemberID    char(60)
-            MemberName  char(255)
+            MemberName  char(255) 登録する名前
         """
         self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
         return self.post("SaveMember.idpass", data=options)
 
     def update(self, options={}):
-        pass
+        """
+            指定されたサイトに会員情報を更新します。
+            SiteID  char(13)
+            SitePass    char(20)
+            MemberID    char(60)
+            MemberName  char(255) 更新する名前
+        """
+        self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
+        return self.post("UpdateMember.idpass", data=options)
 
     def delete(self, options={}):
         pass
