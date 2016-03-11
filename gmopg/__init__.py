@@ -241,6 +241,38 @@ class Tran(BaseAPI):
 
         return self.post('ExecTran.idPass', data=options)
 
+    def change(self, options={}):
+        """
+            決済が完了した取引に対して金額の変更を行います。
+        """
+        pass
+
+    def alter(self, options={}):
+        """
+            1. 決済が完了した取引に対して決済内容の取り消しを行います。指定された取引情報を使用してカード会社と通信を行い取り消しを実施します。
+            2. 取り消されている決済に対して再オーソリを行います。指定された決済情報を使用してカード会社と通信を行い実施します
+            3. 仮売上の決済に対して実売上を行います。尚、実行時に仮売上時との金額チェックを行います。
+
+            ShopID
+            ShopPass
+            AccessID
+            AccessPass
+            JobCd CHAR : VOID(取り消し) / RETURN(返品) / RETURNX(月跨り返品) / CAPTURE(即時売上) / AUTH(仮売上) / SALES(実売上)
+
+            JobCdがCAPTURE / AUTH の場合は以下のパラメタが使用可能です
+
+            Amount NUMBER(7) required
+            Tax NUMBER(7)
+            Method      char(1)    1(一括), 2(分割), 3(ボーナス一括), 4(ボーナス分割), 5(リボ), 処理区分 JobCdがCHECKの場合以外必要
+            PayTimes    number(2)   支払い回数，Methodが分割，ボーナス分割を示している場合は必須
+
+            JobCdがSALESの場合は以下のパラメタが使用可能です
+            Amount NUMBER(7)    仮売上登録時に指定した金額
+        """
+
+        self.assertRequiredOptions(['ShopID', 'ShopPass', 'AccessID', 'AccessPass', 'JobCd'], options)
+        return self.post('AlterTran.idPass', data=options)
+
 
 class GMOPG(object):
 
