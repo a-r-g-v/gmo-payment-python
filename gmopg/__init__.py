@@ -225,6 +225,16 @@ class Tran(BaseAPI):
             ClientField2 char(100)
             ClientField3 char(100)
             ClientFieldFlag char(1)
+
+            GMOPGに登録しているユーザ情報，カード情報を用いて決済する場合は下記のパラメタを付与する必要がある。
+
+            SiteID  required
+            SitePass required
+            MemberID required
+            SeqMode
+            CardSeq required
+            CardPass
+            SecurityCode
         """
         self.assertRequiredOptions(['AccessID', 'AccessPass', 'OrderID', 'CardNo', 'Expire'], options)
         assert ('Method' not in options or options['Method'] % 2 != 0) or 'PayTimes' in options
