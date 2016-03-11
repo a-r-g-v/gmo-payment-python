@@ -19,7 +19,7 @@ class ResponseError(Exception):
         return self.__str__()
 
     def parse(self, response):
-        return [Error(i) for i in response['ErrInfo'][0].split('|')]
+        return [Error(i) for i in response['ErrInfo'].split('|')]
 
 
 class Response(object):
@@ -29,7 +29,9 @@ class Response(object):
         self.ok = bool('ErrCode' not in self.data)
 
     def decode(self, response_text):
-        return urlparse.parse_qs(response_text)
+        response_dict = urlparse.parse_qs(response_text)
+        # parse_qs は {"key": ["value"]} という dict を返却するので，扱いやすいように {"key": "value"} に変換する
+        return {k: v[0] for k, v in response_dict.items()}
 
 
 class BaseAPI(object):
@@ -65,7 +67,27 @@ class BaseAPI(object):
 
 
 class Member(BaseAPI):
-    pass
+
+    def save(self, options={}):
+        """
+            指定されたサイトに会員を登録します。
+
+            SiteID  char(13)
+            SitePass    char(20)
+            MemberID    char(60)
+            MemberName  char(255)
+        """
+        self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
+        return self.post("SaveMember.idpass", data=options)
+
+    def update(self, options={}):
+        pass
+
+    def delete(self, options={}):
+        pass
+
+    def search(self, options={}):
+        pass
 
 
 class Card(BaseAPI):
