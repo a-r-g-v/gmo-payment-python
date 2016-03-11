@@ -92,7 +92,15 @@ class Member(BaseAPI):
         return self.post("UpdateMember.idpass", data=options)
 
     def delete(self, options={}):
-        pass
+        """
+            指定したサイトから会員情報を削除します。
+            SiteID  char(13)
+            SitePass    char(20)
+            MemberID    char(60)
+        """
+
+        self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
+        return self.post("DeleteMember.idpass", data=options)
 
     def search(self, options={}):
         pass
