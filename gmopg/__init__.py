@@ -86,7 +86,7 @@ class Tran(BaseAPI):
             ShopID  char(13)
             ShopPass    char(10)
             OrderID char(27)    取引を識別するID
-            JobCd   char    処理区分 CHECK / CAPTURe / AUTH / SAUTH
+            JobCd   char    処理区分 CHECK / CAPTURE / AUTH / SAUTH
             Amount  number(7)   処理区分が有効性チェック(CHECK)を除き必須，利用金額
             Tax number(7) 税送料
             TdFlag char(1)  本人認証サービスを使用するかどうか 0 or 1
@@ -98,6 +98,29 @@ class Tran(BaseAPI):
         assert options["JobCd"] == "CHECK" or options["Amount"] is not None
 
         return self.post('EntryTran.idPass', data=options)
+
+    def execute(self, options={}):
+        """
+            決済実行 API
+            お客様が入力したカード番号と有効期限の情報でカード会社と通信を行い決済を実施し、結果を返します。
+
+            AccessID    char(32)
+            AccessPass  char(32)
+            OrderID     char(27)
+            Method      char(1)    1(一括), 2(分割), 3(ボーナス一括), 4(ボーナス分割), 5(リボ), 処理区分 JobCdがCHECKの場合以外必要
+            PayTimes    number(2)   支払い回数，Methodが分割，ボーナス分割を示している場合は必須
+            CardNo      char(16)
+            Expire      char(4)     YYMM カード有効期限
+            PIN         char(4)     決済に使用するクレジッドカードの暗証番号を設定(別途オプション契約が必要)
+            ClientField1 char(100) 自由項目
+            ClientField2 char(100)
+            ClientField3 char(100)
+            ClientFieldFlag char(1)
+        """
+        self.assertRequiredOptions(['AccessID', 'AccessPass', 'OrderID', 'CardNo', 'Expire'], options)
+        assert ('Method' not in options or options['Method'] % 2 != 0) or 'PayTimes' in options
+
+        return self.post('ExecTran.idPass', data=options)
 
 
 class GMOPG(object):

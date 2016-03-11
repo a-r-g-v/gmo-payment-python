@@ -1,3 +1,4 @@
+# confing: utf-8
 import unittest
 from requests_mock import mock
 from gmopg import Tran, API_BASE_URL, ResponseError
@@ -17,3 +18,10 @@ class TranTestCase(unittest.TestCase):
             response = tran.entry(options={"JobCd": "CHECK", "ShopPass": "e5sm9fda", "ShopID": "1104314000001", "OrderID": "test-mukasa-py1"})
             assert 'AccessID' in response.data
             assert 'AccessPass' in response.data
+
+    def test_execute(self):
+        tran = Tran()
+
+        with mock() as m:
+            m.post(API_BASE_URL + 'ExecTran.idPass', text="OrderID=1234&Forward=1234567&Method=0&PayTimes=0&Approve=1234567&TranID=1234&TranDate=20161122112233&CheckString=deadbeef")  # CheckString 確認しても良さそう？
+            tran.execute(options={"AccessID": "deadbeeed", "AccessPass": "de27d1ab0068f3fdd6d5cc8f98856816", "OrderID": "1234", "CardNo": "1234567890123456", "Expire": "1234"})
