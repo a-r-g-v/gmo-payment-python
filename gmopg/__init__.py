@@ -1,11 +1,35 @@
+# coding: utf-8
 import requests
+import urlparse
+from errors import Error
 
-API_BASE_URL = ''
+API_BASE_URL = 'https://p01.mul-pay.jp/payment/'
 DEFAULT_TIMEOUT = 30
 
 
-class Error(Exception):
-    pass
+class ResponseError(Exception):
+
+    def __init__(self, response):
+        self.error = self.parse(response.data)
+
+    def __str__(self):
+        return "Response contains Error" + repr(self.error)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def parse(self, response):
+        return [Error(i) for i in response['ErrInfo'][0].split('|')]
+
+
+class Response(object):
+
+    def __init__(self, response_text):
+        self.data = self.decode(response_text)
+        self.ok = bool('ErrCode' not in self.data)
+
+    def decode(self, response_text):
+        return urlparse.parse_qs(response_text)
 
 
 class BaseAPI(object):
@@ -19,8 +43,13 @@ class BaseAPI(object):
 
         response.raise_for_status()
 
-        # TODO: Check Error
-        # ErrCode, ErrInfoがある場合はエラーと見る
+        print response.text
+        # assert False
+
+        response = Response(response.text)
+
+        if not response.ok:
+            raise ResponseError(response)
 
         return response
 
@@ -30,7 +59,7 @@ class BaseAPI(object):
     def post(self, path, **kwargs):
         return self._requests(requests.post, path, **kwargs)
 
-    def assertRequiredOptions(self, options, key={}):
+    def assertRequiredOptions(self, key, options):
         for i in key:
             assert i in options
 
@@ -65,6 +94,13 @@ class Tran(BaseAPI):
         """
         # TODO 3D セキュア系は後で実装する
 
-        self.assertRequiredOptions(['ShopId, ShopPass, OrderID, JobCd'], options)
+        self.assertRequiredOptions(['ShopID', 'ShopPass', 'OrderID', 'JobCd'], options)
         assert options["JobCd"] == "CHECK" or options["Amount"] is not None
+
         return self.post('EntryTran.idPass', data=options)
+
+
+class GMOPG(object):
+
+    def __init__(self, timeout=DEFAULT_TIMEOUT):
+        self.tran = Tran(timeout=timeout)
