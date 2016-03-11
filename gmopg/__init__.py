@@ -13,7 +13,7 @@ class ResponseError(Exception):
         self.error = self.parse(response.data)
 
     def __str__(self):
-        return "Response contains Error" + repr(self.error)
+        return "Response contains Error: " + repr(self.error)
 
     def __repr__(self):
         return self.__str__()
@@ -314,3 +314,6 @@ class GMOPG(object):
 
     def __init__(self, timeout=DEFAULT_TIMEOUT):
         self.tran = Tran(timeout=timeout)
+        self.card = Card(timeout=timeout)
+        self.member = Member(timeout=timeout)
+        self.trade = Trade(timeout=timeout)
