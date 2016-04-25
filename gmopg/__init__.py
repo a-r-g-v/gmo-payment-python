@@ -98,7 +98,7 @@ class Member(BaseAPI):
             MemberName  char(255) 登録する名前
         """
         self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
-        return self.post("SaveMember.idpass", data=options)
+        return self.post("SaveMember.idPass", data=options)
 
     def update(self, options={}):
         """
@@ -109,7 +109,7 @@ class Member(BaseAPI):
             MemberName  char(255) 更新する名前
         """
         self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
-        return self.post("UpdateMember.idpass", data=options)
+        return self.post("UpdateMember.idPass", data=options)
 
     def delete(self, options={}):
         """
@@ -120,7 +120,7 @@ class Member(BaseAPI):
         """
 
         self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
-        return self.post("DeleteMember.idpass", data=options)
+        return self.post("DeleteMember.idPass", data=options)
 
     def search(self, options={}):
         """
@@ -130,7 +130,7 @@ class Member(BaseAPI):
             MemberID    char(60)
         """
         self.assertRequiredOptions(["SiteID", "SitePass", "MemberID"], options)
-        return self.post("SearchMember.idpass", data=options)
+        return self.post("SearchMember.idPass", data=options)
 
 
 class Card(BaseAPI):
