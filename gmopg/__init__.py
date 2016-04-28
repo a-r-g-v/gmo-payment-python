@@ -3,7 +3,9 @@ import requests
 import urlparse
 from errors import Error
 
-API_BASE_URL = 'https://p01.mul-pay.jp/payment/'
+API_BASE_URL_PRODUCTION = 'https://p01.mul-pay.jp/payment/'
+API_BASE_URL_DEVELOPMENT = 'https://pt01.mul-pay.jp/payment/'
+
 DEFAULT_TIMEOUT = 30
 
 
@@ -56,12 +58,13 @@ class Response(object):
 
 class BaseAPI(object):
 
-    def __init__(self, timeout=DEFAULT_TIMEOUT):
+    def __init__(self, timeout=DEFAULT_TIMEOUT, production=False):
         self.timeout = timeout
+        self.api_base_url = API_BASE_URL_PRODUCTION if production else API_BASE_URL_DEVELOPMENT
 
     def _requests(self, method, path, **kwargs):
 
-        response = method(API_BASE_URL + path, timeout=self.timeout, **kwargs)
+        response = method(self.api_base_url + path, timeout=self.timeout, **kwargs)
 
         response.raise_for_status()
 
@@ -312,8 +315,8 @@ class Tran(BaseAPI):
 
 class GMOPG(object):
 
-    def __init__(self, timeout=DEFAULT_TIMEOUT):
-        self.tran = Tran(timeout=timeout)
-        self.card = Card(timeout=timeout)
-        self.member = Member(timeout=timeout)
-        self.trade = Trade(timeout=timeout)
+    def __init__(self, timeout=DEFAULT_TIMEOUT, production=True):
+        self.tran = Tran(timeout=timeout, production=production)
+        self.card = Card(timeout=timeout, production=production)
+        self.member = Member(timeout=timeout, production=production)
+        self.trade = Trade(timeout=timeout, production=production)
