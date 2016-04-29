@@ -21,7 +21,7 @@ class ResponseError(Exception):
         return self.__str__()
 
     def parse(self, response):
-        return [Error(i) for i in response['ErrInfo'].split('|')]
+        return [Error(i).to_dict() for i in response['ErrInfo'].split('|')]
 
 
 class Response(object):

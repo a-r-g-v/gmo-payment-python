@@ -16,6 +16,13 @@ class Error(object):
         self.err_info = str(err_info_code)
         self._set_errors()
 
+    def to_dict(self):
+        if self.err_info not in self.errors:
+            return {self.err_info : '未知のエラーが発生しました。'}
+
+        return {self.err_info : self.errors[self.err_info]}
+
+
     def _set_errors(self):
         self.errors = {
             'E00000000': '特になし',
