@@ -267,7 +267,7 @@ class Tran(BaseAPI):
             CardPass
             SecurityCode
         """
-        self.assertRequiredOptions(['AccessID', 'AccessPass', 'OrderID', 'CardNo', 'Expire'], options)
+        self.assertRequiredOptions(['AccessID', 'AccessPass', 'OrderID'], options)
         assert ('Method' not in options or options['Method'] % 2 != 0) or 'PayTimes' in options
 
         return self.post('ExecTran.idPass', data=options)
