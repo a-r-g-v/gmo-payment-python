@@ -6,10 +6,7 @@ GMOペイメントゲートウェイにプロトコルタイプで接続する�
 # Install
 
 ```
-git clone https://scm.globalnet-ex.com/mukasa/gmo-payment-python.git
-cd gmo-payment-python
-sudo pip install -r ./requirements.txt
-sudo pip install .
+sudo pip install gmopg
 ```
 
 # Uninstall

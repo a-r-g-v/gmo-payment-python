@@ -1,3 +1,5 @@
 *.pyc
 .cache
 *.swp
+*.egg-info/
+dist/
