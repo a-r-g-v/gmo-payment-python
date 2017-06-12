@@ -1,7 +1,7 @@
 # coding: utf-8
 import unittest
 from requests_mock import mock
-from gmopg import Tran, API_BASE_URL, ResponseError
+from gmopg import Tran, API_BASE_URL_PRODUCTION as API_BASE_URL, ResponseError
 
 
 class TranTestCase(unittest.TestCase):

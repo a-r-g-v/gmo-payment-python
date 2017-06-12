@@ -1,12 +1,23 @@
 # coding: utf-8
-import requests
 import urlparse
 from errors import Error
+from requests import Session
 
 API_BASE_URL_PRODUCTION = 'https://p01.mul-pay.jp/payment/'
 API_BASE_URL_DEVELOPMENT = 'https://pt01.mul-pay.jp/payment/'
 
 DEFAULT_TIMEOUT = 30
+
+def make_requests_with_retries():
+    # type: () -> Session
+    from requests.adapters import HTTPAdapter
+    from requests.packages.urllib3.util.retry import Retry
+    session = Session()
+    retries = Retry(
+        total=5, backoff_factor=1, status_forcelist=[502, 503, 504])
+    session.mount('https://', HTTPAdapter(max_retries=retries))
+    session.mount('http://', HTTPAdapter(max_retries=retries))
+    return session
 
 
 class ResponseError(Exception):
@@ -54,7 +65,7 @@ class Response(object):
 
 class BaseAPI(object):
 
-    def __init__(self, timeout=DEFAULT_TIMEOUT, production=False):
+    def __init__(self, timeout=DEFAULT_TIMEOUT, production=True):
         self.timeout = timeout
         self.api_base_url = API_BASE_URL_PRODUCTION if production else API_BASE_URL_DEVELOPMENT
 
@@ -72,9 +83,11 @@ class BaseAPI(object):
         return response
 
     def get(self, path, **kwargs):
+        requests = make_requests_with_retries()
         return self._requests(requests.get, path, **kwargs)
 
     def post(self, path, **kwargs):
+        requests = make_requests_with_retries()
         return self._requests(requests.post, path, **kwargs)
 
     def assertRequiredOptions(self, key, options):

@@ -1,7 +1,7 @@
 # coding: utf-8
 import unittest
 from requests_mock import mock
-from gmopg import Trade, API_BASE_URL
+from gmopg import Trade, API_BASE_URL_PRODUCTION as API_BASE_URL
 
 
 class TradeTestCase(unittest.TestCase):

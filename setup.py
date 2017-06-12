@@ -8,5 +8,5 @@ setup(name='gmopg',
       author='a_r_g_v',
       author_email='info@arg.vc',
       url='https://github.com/a-r-g-v/gmo-payment-python',
-      packages=['gmopg']
+      packages=['gmopg', 'requests']
       )
