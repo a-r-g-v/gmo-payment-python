@@ -1,5 +1,5 @@
 # coding: utf-8
-import urlparse
+import six.moves.urllib.parse as urlparse
 from errors import Error
 from requests import Session
 
