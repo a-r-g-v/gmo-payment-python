@@ -64,9 +64,6 @@ class BaseAPI(object):
 
         response.raise_for_status()
 
-        print response.text
-        # assert False
-
         response = Response(response.text)
 
         if not response.ok:

@@ -36,9 +36,9 @@ gmopg = GMOPG(timeout=10)
 try:
   response = gmopg.tran.execute({'ShopID': 'your-shop-id', 'ShopPass': 'your-shop-pass', 'OrderID': 'your-order-id': '1234', 'JobCD': '1234'})
 except ResponseError as e:
-  print e
+  print(e)
 else:
-  print response.data
+  print(response.data)
 ```
 
 パラメタ名はペイメントゲートウェイの仕様書準拠です。 
