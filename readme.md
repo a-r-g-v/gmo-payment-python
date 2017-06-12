@@ -30,7 +30,7 @@ py.test --cov=gmopg ./tests
 ExecTran.idPassをコールするサンプル
 
 ```python
-from gmpg import GMOPG
+from gmopg import GMOPG
 
 gmopg = GMOPG(timeout=10)
 try:
