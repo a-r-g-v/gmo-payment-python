@@ -20,7 +20,10 @@ def make_requests_with_retries():
     return session
 
 
-class ResponseError(Exception):
+class GMOPGException(Exception):
+    pass
+
+class ResponseError(GMOPGException):
 
     def __init__(self, response):
         self.error = self.parse(response.data)
@@ -72,8 +75,6 @@ class BaseAPI(object):
     def _requests(self, method, path, **kwargs):
 
         response = method(self.api_base_url + path, timeout=self.timeout, **kwargs)
-
-        response.raise_for_status()
 
         response = Response(response.text)
 
