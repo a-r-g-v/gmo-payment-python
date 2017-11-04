@@ -3,20 +3,20 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from gmopg.exceptions import ResponseError
 from gmopg._helpers import make_requests_with_retries
 from gmopg.response import Response
+from gmopg.context import Context
 
 class BaseAPI(object):
-    API_BASE_URL_PRODUCTION = 'https://p01.mul-pay.jp/payment/'
-    API_BASE_URL_DEVELOPMENT = 'https://pt01.mul-pay.jp/payment/'
-    DEFAULT_TIMEOUT = 30
 
-    def __init__(self, timeout=None, production=True):
+    def __init__(self, context=None):
+        self.context = context if context else Context()
 
-        if timeout:
-            self.timeout = timeout
-        else:
-            self.timeout = self.DEFAULT_TIMEOUT
+    @property
+    def timeout(self):
+        return self.context.timeout
 
-        self.api_base_url = self.API_BASE_URL_PRODUCTION if production else self.API_BASE_URL_DEVELOPMENT
+    @property
+    def api_base_url(self):
+        return self.context.api_base_url
 
     def _requests(self, method, path, **kwargs):
 

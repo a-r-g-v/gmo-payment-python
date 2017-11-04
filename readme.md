@@ -32,7 +32,7 @@ ExecTran.idPassをコールするサンプル
 ```python
 from gmopg import GMOPG
 
-gmopg = GMOPG(timeout=10)
+gmopg = GMOPG(timeout=10, production=True)
 try:
   response = gmopg.tran.execute({'ShopID': 'your-shop-id', 'ShopPass': 'your-shop-pass', 'OrderID': 'your-order-id': '1234', 'JobCD': '1234'})
 except ResponseError as e:
