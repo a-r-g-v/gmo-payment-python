@@ -3,3 +3,6 @@
 *.swp
 *.egg-info/
 dist/
+.eggs/
+.tox/
+py3/
