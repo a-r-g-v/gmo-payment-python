@@ -1,6 +1,6 @@
 # coding: utf-8
 import unittest
-from gmopg import Response
+from gmopg.response import Response
 
 
 class ResponseTestCase(unittest.TestCase):

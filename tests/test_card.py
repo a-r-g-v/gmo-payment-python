@@ -1,8 +1,7 @@
 # coding: utf-8
 import unittest
 from requests_mock import mock
-from gmopg import Card, API_BASE_URL_PRODUCTION as API_BASE_URL
-
+from gmopg.api import Card
 
 class CardTestCase(unittest.TestCase):
 
@@ -10,7 +9,7 @@ class CardTestCase(unittest.TestCase):
         card = Card()
 
         with mock() as m:
-            m.post(API_BASE_URL + 'SaveCard.idPass', text="CardSeq=1000&CardNo=1111111111&Forward=1111111")
+            m.post(card.api_base_url + 'SaveCard.idPass', text="CardSeq=1000&CardNo=1111111111&Forward=1111111")
             response = card.save(options={'SiteID': '1234', 'SitePass': '1234', 'MemberID': '1', 'CardNo': '1111111111', 'Expire': '1111'})
             assert 'CardSeq' in response.data
             assert 'CardNo' in response.data
@@ -19,14 +18,14 @@ class CardTestCase(unittest.TestCase):
     def test_delete(self):
         card = Card()
         with mock() as m:
-            m.post(API_BASE_URL + 'DeleteCard.idPass', text="CardSeq=1000")
+            m.post(card.api_base_url + 'DeleteCard.idPass', text="CardSeq=1000")
             response = card.delete(options={'SiteID': '1234', 'SitePass': '1234', 'MemberID': '1', 'CardSeq': '1000'})
             assert 'CardSeq' in response.data
 
     def test_search(self):
         card = Card()
         with mock() as m:
-            m.post(API_BASE_URL + 'SearchCard.idPass', text="CardSeq=1|2&DefaultFlag=1|0&CardName=poe|foo&CardNo=1234|2345&Expire=1111|1112&HolderName=poe|foo&DeleteFlag=1|0")
+            m.post(card.api_base_url + 'SearchCard.idPass', text="CardSeq=1|2&DefaultFlag=1|0&CardName=poe|foo&CardNo=1234|2345&Expire=1111|1112&HolderName=poe|foo&DeleteFlag=1|0")
             response = card.search(options={'SiteID': '1234', 'SitePass': '1234', 'MemberID': '1234', 'SeqMode': '1'})
 
             parased_response = response.parse(ignores=['DeleteFlag'])
@@ -41,6 +40,6 @@ class CardTestCase(unittest.TestCase):
     def test_traded(self):
         card = Card()
         with mock() as m:
-            m.post(API_BASE_URL + 'TradedCard.idPass', text="CardSeq=1&CardNo=1111&Forward=1111")
+            m.post(card.api_base_url + 'TradedCard.idPass', text="CardSeq=1&CardNo=1111&Forward=1111")
             response = card.traded(options={'SiteID': '1111', 'SitePass': '1111', 'OrderID': '1234', 'ShopID': '1234', 'ShopPass': '1234', 'MemberID': '1234'})
             assert 'CardNo' in response.data
