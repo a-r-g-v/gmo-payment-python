@@ -1,6 +1,6 @@
 # coding: utf-8
 import six.moves.urllib.parse as urlparse
-from errors import Error
+from gmopg.errors import Error
 from requests import Session
 
 API_BASE_URL_PRODUCTION = 'https://p01.mul-pay.jp/payment/'
@@ -63,7 +63,7 @@ class Response(object):
                     result[i2] = {}
                 result[i2][k] = v2
 
-        return result.values()
+        return list(result.values())
 
 
 class BaseAPI(object):
