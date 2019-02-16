@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='gmopg',
-      version='0.0.5',
+      version='0.0.6',
       description='Python API Client for GMO Payment Gateway',
       license="MIT",
       keywords="gmopg",
