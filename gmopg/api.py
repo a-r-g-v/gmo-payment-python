@@ -64,11 +64,7 @@ class Member(BaseAPI):
 class Card(BaseAPI):
 
     def save(self, options={}):
-        if 'Token' not in options:
-            self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'CardNo', 'Expire'], options)
-        else:
-            self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID'], options)
-
+        self.assertRequiredOptions(['SiteID', 'SitePass', 'MemberID', 'CardNo', 'Expire'], options)
         return self.post('SaveCard.idPass', data=options)
 
     def delete(self, options={}):
