@@ -6,9 +6,11 @@ jobs:
     steps:
       - checkout
 
-      - run: sudo pip install pipenv
+      - run: python3 -m venv py3
 
       - run: 
           command: |
-            pipenv install --dev
-            pipenv run tox
+            . py3/bin/activate
+            pip install tox
+            pip install -r ./requirements.txt
+            tox
